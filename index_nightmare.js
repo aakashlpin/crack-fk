@@ -1,9 +1,9 @@
-var app = require('express')();
+// var app = require('express')();
 var Nightmare = require('nightmare');
 var nightmare = Nightmare({ show: false })
 var url = 'https://dl.flipkart.com/dl/levi-s-two-ply-slippers/p/itmefrubpuavgh8y?pid=SFFEFRUBRWYUZMSK';
 
-app.get('/', (req, res) => {
+function scrape () {
   nightmare
     .useragent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36")
     .viewport(1280, 768)
@@ -17,15 +17,18 @@ app.get('/', (req, res) => {
     .end()
     .then(function (result) {
       console.log(result)
-      res.send(result);
+      // res.send(result);
     })
     .catch(function (error) {
       console.error('Search failed:', error);
-      res.send('Search failed');
+      // res.send('Search failed');
     });
-});
-
-app.listen(process.env.PORT || 3000);
+}
+//
+// app.get('/', (req, res) => {
+// });
+//
+// app.listen(process.env.PORT || 3000);
 
 
 
