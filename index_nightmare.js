@@ -24,6 +24,8 @@ function scrape () {
       // res.send('Search failed');
     });
 }
+
+scrape();
 //
 // app.get('/', (req, res) => {
 // });
