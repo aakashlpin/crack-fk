@@ -12,11 +12,11 @@ nightmare
     var price = document.querySelector('._1vC4OE._37U4_g').innerHTML;
     // var image = document.querySelector('.sfescn').getAttribute('src');
     // var name = document.querySelector('._3eAQiD').innerHTML;
-    return {
+    return JSON.stringify({
       // image: image,
       price: price,
       // name: name,
-    }
+    })
   })
   .end()
   .then(function (result) {
