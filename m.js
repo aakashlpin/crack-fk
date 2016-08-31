@@ -8,7 +8,19 @@ nightmare
   .goto(url)
   .wait('.pricing .selling-price')
   .evaluate(function () {
-    return document.querySelector('.pricing .selling-price').innerHTML
+    var nameDOM = document.querySelector('[itemprop="name"]');
+    var name = nameDOM.innerHTML.replace(/^\s+|\s+$/g, '');
+
+    var price = document.querySelector('.pricing .selling-price').innerHTML;
+
+    var imageDOM = document.querySelector('.productImages .productImage');
+    var image = imageDOM.getAttribute('src');
+
+    return {
+      name: name,
+      price: price,
+      image: image
+    }
   })
   .end()
   .then(function (result) {
