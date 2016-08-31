@@ -3,32 +3,37 @@ var Nightmare = require('nightmare');
 var nightmare = Nightmare({ show: false });
 var url = 'https://dl.flipkart.com/dl/levi-s-two-ply-slippers/p/itmefrubpuavgh8y?pid=SFFEFRUBRWYUZMSK';
 
-nightmare
-  .useragent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36")
-  .viewport(1280, 768)
-  .goto(url)
-  .wait(10000)
-  .evaluate(function () {
-    // return document.querySelector('.pricing .selling-price').innerHTML;
-    return document.querySelector('._1vC4OE._37U4_g').innerHTML;
-    // var price = document.querySelector('._1vC4OE._37U4_g').innerHTML;
-    // // var image = document.querySelector('.sfescn').getAttribute('src');
-    // // var name = document.querySelector('._3eAQiD').innerHTML;
-    // return JSON.stringify({
-    //   // image: image,
-    //   price: price,
-    //   // name: name,
-    // })
-  })
-  .end()
-  .then(function (result) {
-    console.log(result)
-    // res.send(result);
-  })
-  .catch(function (error) {
-    console.error('Search failed:', error);
-    // res.send('Search failed');
-  });
+try {
+  nightmare
+    .useragent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36")
+    .viewport(1280, 768)
+    .goto(url)
+    .wait(10000)
+    .evaluate(function () {
+      // return document.querySelector('.pricing .selling-price').innerHTML;
+      return document.querySelector('._1vC4OE._37U4_g').innerHTML;
+      // var price = document.querySelector('._1vC4OE._37U4_g').innerHTML;
+      // // var image = document.querySelector('.sfescn').getAttribute('src');
+      // // var name = document.querySelector('._3eAQiD').innerHTML;
+      // return JSON.stringify({
+      //   // image: image,
+      //   price: price,
+      //   // name: name,
+      // })
+    })
+    .end()
+    .then(function (result) {
+      console.log(result)
+      // res.send(result);
+    })
+    .catch(function (error) {
+      console.error('Search failed:', error);
+      // res.send('Search failed');
+    });
+
+} catch(e) {
+  console.error(e);
+}
 //
 // app.get('/', (req, res) => {
 // });
