@@ -2,12 +2,15 @@ var app = require('express')();
 var bodyParser = require('body-parser');
 var scrape = require('./engine/scrape');
 var authServer = require('./middlewares/auth');
+var morgan = require('morgan')
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // parse application/json
 app.use(bodyParser.json());
+
+app.use(morgan('combined'));
 
 app.post('/', authServer, function (req, res) {
   var url  = req.body.url;
