@@ -1,60 +1,35 @@
-var phantom = require('phantom');
-var fs = require('fs');
-var parser  = require('cheerio');
-var _ph, _page, _outObj;
+var app = require('express')();
+var bodyParser = require('body-parser');
+var scrape = require('./engine/scrape');
+var authServer = require('./middlewares/auth');
 
-function waitFor(testFx, onReady, timeOutMillis) {
-    var maxtimeOutMillis = timeOutMillis ? timeOutMillis : 3000, //< Default Max Timout is 3s
-        start = new Date().getTime(),
-        condition = false,
-        interval = setInterval(function() {
-            if ( (new Date().getTime() - start < maxtimeOutMillis) && !condition ) {
-                // If not time-out yet and condition not yet fulfilled
-                condition = (typeof(testFx) === "string" ? eval(testFx) : testFx()); //< defensive code
-            } else {
-                if(!condition) {
-                    // If condition still not fulfilled (timeout but condition is 'false')
-                    console.log("'waitFor()' timeout");
-                    phantom.exit(1);
-                } else {
-                    // Condition fulfilled (timeout and/or condition is 'true')
-                    console.log("'waitFor()' finished in " + (new Date().getTime() - start) + "ms.");
-                    typeof(onReady) === "string" ? eval(onReady) : onReady(); //< Do what it's supposed to do once the condition is fulfilled
-                    clearInterval(interval); //< Stop this interval
-                }
-            }
-        }, 250); //< repeat check every 250ms
-};
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
 
+// parse application/json
+app.use(bodyParser.json());
 
-phantom.create().then(ph => {
-    _ph = ph;
-    return _ph.createPage();
-}).then(page => {
-    _page = page;
-    return _page.open('https://www.flipkart.com/fitbit-blaze-black-silver-smartwatch/p/itmejxmuyhfjzcgq?srno=s_1_2&lid=LSTSMWEJXC3SZNPWA9TGQYFQD&qH=6cab43ca132f7071&pid=SMWEJXC3SZNPWA9T&affid=aakashlpi');
-}).then(status => {
-    console.log(status);
-    waitFor(function() {
-        // Check in the page if a specific element is now visible
-        return _page.evaluate(function() {
-          var $ = parser.load(content);
-          return $("._1vC4OE._37U4_g").is(":visible");
-        });
-    }, function() {
-       console.log("The price info should be visible now.");
-       _page.property('content').then()
-    });
+app.post('/', authServer, function (req, res) {
+  var url  = req.body.url;
+  if (!url) {
+    return res.status(403).send('No URL supplied');
+  }
+  if (url.indexOf('flipkart.com') === -1) {
+    return res.status(403).send('The URL supplied is not a Flipkart.com URL');
+  }
 
+  scrape(url, (err, scrapedData) => {
+    if (err) {
+      return res.status(500).json(scrapedData);
+    }
+    return res.status(200).json(scrapedData);
+  })
+})
 
-
-
-    return _page.property('content')
-}).then(content => {
-    console.log(content);
-    fs.writeFileSync('content1.html', content);
-    var $ = parser.load(content);
-    console.log($().html());
-    _page.close();
-    _ph.exit();
-}).catch(e => console.log(e));
+var PORT = 3001;
+app.listen(process.env.PORT || PORT, function (err) {
+  if (err) {
+    return console.log('server startup failed at port', PORT, err);
+  }
+  console.log('server listening at port', PORT);
+});

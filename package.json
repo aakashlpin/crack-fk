@@ -4,11 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index_nightmare.js"
+    "start": "node index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.15.2",
     "cheerio": "^0.22.0",
     "express": "^4.14.0",
     "nightmare": "^2.6.1",
