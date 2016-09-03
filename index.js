@@ -21,12 +21,13 @@ app.post('/', authServer, function (req, res) {
     return res.status(403).send('The URL supplied is not a Flipkart.com URL');
   }
 
-  scrape(url, (err, scrapedData) => {
-    if (err) {
-      return res.status(500).json(scrapedData);
-    }
+  scrape(url)
+  .then(function (scrapedData) {
     return res.status(200).json(scrapedData);
   })
+  .catch(function (error) {
+    return res.status(500).send(error);
+  });
 })
 
 var PORT = 3001;
