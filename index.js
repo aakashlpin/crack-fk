@@ -1,6 +1,7 @@
 var app = require('express')();
 var bodyParser = require('body-parser');
 var scrape = require('./engine/scrape');
+var generateReport = require('./engine/reporter');
 var authServer = require('./middlewares/auth');
 var morgan = require('morgan')
 
@@ -27,7 +28,17 @@ app.post('/', authServer, function (req, res) {
   })
   .catch(function (error) {
     return res.status(500).send(error);
-  });
+  })
+})
+
+app.post('/generate-report', authServer, function (req, res) {
+  generateReport()
+  .then(function (filePaths) {
+    return res.status(200).json(filePaths)
+  })
+  .catch(function (error) {
+    return res.status(500).send(error);
+  })
 })
 
 var PORT = 3001;
