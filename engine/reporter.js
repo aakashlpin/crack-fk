@@ -2,10 +2,10 @@ var Nightmare = require('nightmare');
 var url = 'https://www.amazon.in/ap/signin?openid.return_to=https%3A%2F%2Faffiliate-program.amazon.in%2F&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.assoc_handle=amzn_associates_in&openid.mode=checkid_setup&marketPlaceId=A21TJRUUN4KGV&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0&openid.pape.max_auth_age=0';
 
 function reporter () {
-  var nightmare = Nightmare({ show: false });
+  var nightmare = Nightmare({ show: true });
 
   var time = new Date();
-  var filenameSuffix = '.' + time.getDate() + '.' + (time.getMonth() + 1) + '.' + time.getFullYear();
+  var filenameSuffix = time.getTime();
   var basePath = __dirname + '/..';
   var yesterdayFilename = '/static/yesterday' + filenameSuffix + '.png';
   var monthFilename = '/static/monthly' + filenameSuffix + '.png';
