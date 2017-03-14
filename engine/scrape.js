@@ -7,15 +7,19 @@ function scrapeFK (url) {
     .useragent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36")
     .viewport(1280, 768)
     .goto(url)
-    .wait('.pricing .selling-price')
+    .wait('._1vC4OE._37U4_g')
     .evaluate(function () {
-      var nameDOM = document.querySelector('[itemprop="name"]');
+      var nameDOM = document.querySelector('._3eAQiD');
       var name = nameDOM.innerHTML.replace(/^\s+|\s+$/g, '');
+      name = name.replace(/<!--[\s\S]*?-->/g, '').replace(/&nbsp;/g, ' ');
 
-      var price = document.querySelector('.pricing .selling-price').innerHTML;
-      price = Number(price.replace('Rs. ', '').replace(/,/g, ''));
+      var price = document.querySelector('._1vC4OE._37U4_g').innerHTML;
+      price = price.replace(/<!--[\s\S]*?-->/g, '').replace(/,/g, '');
 
-      var imageDOM = document.querySelector('.productImages .productImage');
+      var priceStringLength = price.length;
+      price = Number(price.substr(1, priceStringLength - 1));
+
+      var imageDOM = document.querySelector('.sfescn');
       var image = imageDOM.getAttribute('src');
 
       return {
