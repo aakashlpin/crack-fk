@@ -60,17 +60,16 @@ app.post('/', authServer, function (req, res) {
   }
 
 
-  var options = {
-    display: {width: 1024, height: 768, depth: 24},
-    args: ['-extension', 'RANDR'],
-    stdio: 'inherit'
-  };
+  // var options = {
+  //   display: {width: 1024, height: 768, depth: 24},
+  //   stdio: 'inherit'
+  // };
 
-  headless(options, function(err, childProcess, servernum) {
+  // headless(9, function(err, childProcess, servernum) {
     // childProcess is a ChildProcess, as returned from child_process.spawn()
-    console.log('Xvfb running on server number', servernum);
-    console.log('Xvfb pid', childProcess.pid);
-    console.log('err should be null', err);
+    // console.log('Xvfb running on server number', servernum);
+    // console.log('Xvfb pid', childProcess.pid);
+    // console.log('err should be null', err);
 
     scrape(url)
     .then(function (scrapedData) {
@@ -81,7 +80,7 @@ app.post('/', authServer, function (req, res) {
       logger.error('scrape failed', {url, error});
       return res.status(500).send(error);
     })
-  });
+  // });
 
 })
 
