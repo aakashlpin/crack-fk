@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "forever stopall && nohup DEBUG=nightmare xvfb-run --server-args=\"-screen 0 1024x768x24\" node index.js &",
+    "start": "forever stopall && DEBUG=nightmare xvfb-run --server-args=\"-screen 0 1024x768x24\" forever start index.js",
     "local": "DEBUG=nightmare nodemon index.js"
   },
   "author": "",
