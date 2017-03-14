@@ -6,7 +6,6 @@ var authServer = require('./middlewares/auth');
 var morgan = require('morgan')
 var winston = require('winston');
 var Papertrail = require('winston-papertrail').Papertrail;
-var headless = require('headless');
 
 var papertrail = new Papertrail({
   host: 'logs5.papertrailapp.com',
@@ -59,29 +58,15 @@ app.post('/', authServer, function (req, res) {
     return res.status(403).send('The URL supplied is not a Flipkart.com URL');
   }
 
-
-  // var options = {
-  //   display: {width: 1024, height: 768, depth: 24},
-  //   stdio: 'inherit'
-  // };
-
-  // headless(9, function(err, childProcess, servernum) {
-    // childProcess is a ChildProcess, as returned from child_process.spawn()
-    // console.log('Xvfb running on server number', servernum);
-    // console.log('Xvfb pid', childProcess.pid);
-    // console.log('err should be null', err);
-
-    scrape(url)
-    .then(function (scrapedData) {
-      logger.info('scrape successful', {url, scrapedData});
-      return res.status(200).json(scrapedData);
-    })
-    .catch(function (error) {
-      logger.error('scrape failed', {url, error});
-      return res.status(500).send(error);
-    })
-  // });
-
+  scrape(url)
+  .then(function (scrapedData) {
+    logger.info('scrape successful', {url, scrapedData});
+    return res.status(200).json(scrapedData);
+  })
+  .catch(function (error) {
+    logger.error('scrape failed', {url, error});
+    return res.status(500).send(error);
+  });
 })
 
 app.post('/generate-report', authServer, function (req, res) {
