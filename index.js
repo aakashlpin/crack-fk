@@ -61,7 +61,7 @@ app.post('/', authServer, function (req, res) {
 
 
   var options = {
-    display: {width: 1024, height: 980, depth: 32},
+    display: {width: 1024, height: 768, depth: 24},
     args: ['-extension', 'RANDR'],
     stdio: 'inherit'
   };
