@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "DEBUG=nightmare xvfb-run --server-args='-screen 0 1024x768x24' forever start -s index.js"
+    "start": "DEBUG=nightmare xvfb-run --server-args='-screen 0 1024x768x24' forever start -s index.js",
+    "local": "DEBUG=nightmare nodemon index.js"
   },
   "author": "",
   "license": "ISC",
@@ -15,7 +16,9 @@
     "morgan": "^1.7.0",
     "nightmare": "^2.6.1",
     "phantom": "^2.1.19",
-    "shelljs": "^0.7.5"
+    "shelljs": "^0.7.5",
+    "winston": "^2.3.1",
+    "winston-papertrail": "^1.0.4"
   },
   "devDependencies": {
     "shipit-cli": "^3.0.0",
