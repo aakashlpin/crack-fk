@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "DEBUG=nightmare xvfb-run --server-args='-screen 0 1024x768x24' forever start -s index.js"
   },
   "author": "",
   "license": "ISC",
@@ -16,5 +16,9 @@
     "nightmare": "^2.6.1",
     "phantom": "^2.1.19",
     "shelljs": "^0.7.5"
+  },
+  "devDependencies": {
+    "shipit-cli": "^3.0.0",
+    "shipit-deploy": "^2.4.0"
   }
 }
