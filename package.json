@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "forever stopall && DEBUG=nightmare xvfb-run --server-args=\"-screen 0 1024x768x24\" forever start index.js",
+    "start": "forever stopall && DEBUG=nightmare forever start index.js",
     "local": "DEBUG=nightmare nodemon index.js"
   },
   "author": "",
@@ -13,6 +13,7 @@
     "body-parser": "^1.15.2",
     "cheerio": "^0.22.0",
     "express": "^4.14.0",
+    "headless": "^1.2.0",
     "morgan": "^1.7.0",
     "nightmare": "^2.6.1",
     "phantom": "^2.1.19",
