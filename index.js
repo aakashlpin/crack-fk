@@ -52,20 +52,34 @@ app.use(morgan('combined', { stream: logger.stream }));
 app.post('/', authServer, function (req, res) {
   var url  = req.body.url;
   if (!url) {
-    return res.status(403).send('No URL supplied');
+    return res.status(403).json({
+      error: 'No URL supplied'
+    });
   }
   if (url.indexOf('flipkart.com') === -1) {
-    return res.status(403).send('The URL supplied is not a Flipkart.com URL');
+    return res.status(403).send({
+      error: 'The URL supplied is not a Flipkart.com URL'
+    });
   }
 
   scrape(url)
   .then(function (scrapedData) {
-    logger.info('scrape successful', {url, scrapedData});
-    return res.status(200).json(scrapedData);
+    const { name, price, image } = scrapedData;
+    if (name && price && image) {
+      logger.info('scrape successful', {url, scrapedData});
+      return res.status(200).json(scrapedData);
+    }
+    return res.status(500).json({
+      error: 'unable to process',
+      url: url,
+    })
   })
   .catch(function (error) {
     logger.error('scrape failed', {url, error});
-    return res.status(500).send(error);
+    return res.status(500).json({
+      error: error,
+      url: url,
+    });
   });
 })
 
