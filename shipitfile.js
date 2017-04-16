@@ -19,7 +19,7 @@ module.exports = function (shipit) {
   });
 
   shipit.task('start', function () {
-    return shipit.remote('cd /tmp/deploy_to/current && npm i --verbose').then(function () {
+    return shipit.remote('cd /tmp/deploy_to/current && npm i').then(function () {
       shipit.remote('cd /tmp/deploy_to/current && mkdir logs && npm run start').then(function () {
         shipit.log('all done');
       })

@@ -4,43 +4,7 @@ var scrape = require('./engine/scrape');
 var generateReport = require('./engine/reporter');
 var authServer = require('./middlewares/auth');
 var morgan = require('morgan')
-var winston = require('winston');
-var Papertrail = require('winston-papertrail').Papertrail;
-
-var papertrail = new Papertrail({
-  host: 'logs5.papertrailapp.com',
-  port: 52312,
-  colorize: true,
-});
-
-var logger = new winston.Logger({
-  transports: [
-    new winston.transports.File({
-      level: 'info',
-      filename: './logs/all-logs.log',
-      handleExceptions: true,
-      json: true,
-      maxsize: 5242880, //5MB
-      maxFiles: 5,
-      colorize: false
-    }),
-    new winston.transports.Console({
-      level: 'debug',
-      handleExceptions: true,
-      json: false,
-      colorize: true
-    }),
-    papertrail,
-  ],
-  exitOnError: false
-});
-
-logger.stream = {
-  write: function(message, encoding){
-    logger.info(message);
-  }
-};
-
+var logger = require('./logger');
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -62,25 +26,7 @@ app.post('/', authServer, function (req, res) {
     });
   }
 
-  scrape(url)
-  .then(function (scrapedData) {
-    const { name, price, image } = scrapedData;
-    if (name && price && image) {
-      logger.info('scrape successful', {url, scrapedData});
-      return res.status(200).json(scrapedData);
-    }
-    return res.status(500).json({
-      error: 'unable to process',
-      url: url,
-    })
-  })
-  .catch(function (error) {
-    logger.error('scrape failed', {url, error});
-    return res.status(500).json({
-      error: error,
-      url: url,
-    });
-  });
+  scrape(url, res);
 })
 
 app.post('/generate-report', authServer, function (req, res) {
