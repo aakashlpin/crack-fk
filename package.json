@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "nodemon index.js --watch false",
     "start": "forever stopall && DEBUG=nightmare forever start index.js",
     "local": "DEBUG=nightmare nodemon index.js"
   },
